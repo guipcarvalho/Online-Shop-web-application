@@ -1,15 +1,8 @@
 # Online Shop Application
 
 #### A full-stack Online Shop web application using Spring Boot 2 and Angular 7. 
-This is a Single Page Appliaction with client-side rendering. It includes [backend](https://github.com/zhulinn/SpringBoot-Angular7-ShoppingCart/tree/backend) and [frontend](https://github.com/zhulinn/SpringBoot-Angular7-ShoppingCart/tree/frontend) two seperate projects on different branches.
+This is a Single Page Appliaction with client-side rendering. It includes backend and frontend two seperate projects on different branches.
 The frontend client makes API calls to the backend server when it is running.
-
-#### Live Demo: [https://springboot-angular-shop.herokuapp.com/](https://springboot-angular-shop.herokuapp.com/)
-
-> This project is based on my previous project [Online-Shopping-Store](https://github.com/zhulinn/Online-Shopping-Store), which uses FreeMarker as template engine for server-side rendering. 
-
-## Screenshot
-![](https://raw.githubusercontent.com/zhulinn/blog/hexo/source/uploads/post_pics/spring-angular/cart.png)
 
 ## Features
 - REST API
@@ -68,6 +61,13 @@ Note: The backend API url is configured in `src/environments/environment.ts` of 
   
 #### Run in Docker
 You can build the image and run the container with Docker. 
+0. Run Postgre in Docker 
+```bash 
+docker run --name mypostgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=root -p5432:5432 -d postgres:9.4.5
+sudo apt update
+sudo apt install maven
+mvn -version
+``` 
 1. Build backend project
 ```bash
 cd backend
@@ -77,6 +77,7 @@ mvn package
 ```bash
 cd frontend
 npm install
+npm install -g @angular/cli@7.1.4
 ng build --prod
 ```
 3. Build images and run containers
