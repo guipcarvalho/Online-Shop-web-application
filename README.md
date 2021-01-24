@@ -77,7 +77,7 @@ mvn package
 ```bash
 cd frontend
 npm install
-npm install -g @angular/cli@7.1.4
+alias ng="node_modules/@angular/cli/bin/ng"
 ng build --prod
 ```
 3. Build images and run containers
