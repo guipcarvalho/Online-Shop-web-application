@@ -1,19 +1,48 @@
-version: '3.3'
 services:
   db:
-    image: postgres:9.4.5
+    image: postgres:14-alpine
+    container_name: shop_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
   backend:
-    image: shivaspk/ecommerce_backend
-    ports: 
-      - "8080:8080"
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: shop_backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      # optional: reduce Hibernate logs
+      # LOGGING_LEVEL_ORG_HIBERNATE_SQL: INFO
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
   frontend:
-    image: shivaspk/ecommerce_frontend
-    ports: 
-      - "80:80"
-    depends_on: 
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: shop_frontend
+    depends_on:
       - backend
+    ports:
+      - "8088:80"
+
+volumes:
+  db_data:
