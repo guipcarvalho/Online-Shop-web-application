@@ -20,8 +20,9 @@ RUN (npm ci || npm install --no-audit --no-fund)
 # Pin legacy-compatible CSS toolchain to avoid browserslist/autoprefixer breaking on Node 12
 RUN npm install -D postcss@7 autoprefixer@9 browserslist@4.21.9 --no-audit --no-fund
 
-# Ensure node-sass version compatible with Node 12 and prebuilt binaries available
-RUN npm install node-sass@4.14.1 --no-audit --no-fund
+# Replace node-sass with sass (dart-sass) for better cross-platform compatibility
+RUN npm uninstall node-sass --no-audit --no-fund || true
+RUN npm install sass@1.32.13 --no-audit --no-fund
 
 # Now bring in the rest of the code and build
 COPY . .
